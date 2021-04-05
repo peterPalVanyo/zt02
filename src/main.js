@@ -17,65 +17,69 @@ let dim = {
 
 let svg = d3.select('body').append('svg').attrs(dim).style('background', '#333')
 
+d3.json('districts.json').then(districts => {
+
+    //domain and range: top is the svg height-50
+    let scaleY = d3.scaleLinear([0, d3.max(districts, d=>d.onlak)], [350,50])
+    let scaleX = d3.scaleBand().domain(districts.map(d=>d.name)).rangeRound([50,780]).paddingOuter(0).paddingInner(.2)
+    
+    /* AXES - the axises, somehow the translateX didnot work */
+    
+    let axisX = d3.axisBottom(scaleX)
+    let axisY = d3.axisLeft(scaleY)
+    let gridY = d3.axisLeft(scaleY)
+    axisY.ticks(5)
+    axisX.tickSize(0)
+    gridY.tickSize(-730).ticks(5).tickFormat('').tickSizeOuter(0)
+    //gridY
+    svg.append('g').attr('transform', 'translate(50,0)').call(gridY).selectAll('line').attrs({
+        'stroke': 'white',
+        'stroke-dasharray': '3,9'
+    })
+    //titleX
+    svg.append('g').attr('transform','translate(0,350)').attr('color','white').call(axisX).selectAll('text').attrs({
+        'font-size': 15,
+        'transform': 'rotate(-60), translate(-30,0)',
+    })
+    //titleY
+    svg.append('g').style('font-size', '12px').attrs({
+        'transform': 'translate(50,0)',
+        'color': 'white',
+    }).call(axisY)
+    
+    /* CHART - the content of the chart */
+    
+    svg.selectAll('rect').data(districts).enter().append('rect').attrs({
+        'x': d => scaleX(d.name),
+        'y': (d) => scaleY(d.onlak),
+        'width': scaleX.bandwidth(),
+        'height': (d) => scaleY(0) - scaleY(d.onlak),
+        id: (d,i) => d.id,
+        'fill': '#808080',
+        'stroke': 'white',
+        'fill-opacity': .6,
+        'stroke-width': 2,
+    })
+    
+    svg.select('rect#elso').attr('fill', '#FFB0CD')
+    
+    //if u saved the script above to a bars variable: to access the html item: using .nodes() method to access the _groups
+    /* let ker1 = bars.nodes()[0]
+    console.log(bars) */
+    
+    //circle at the top of the bars
+    svg.selectAll('circle').data(districts).enter().append('circle').attrs({
+        'cx': d => scaleX(d.name) + scaleX.bandwidth()/2,
+        'cy': (d) => scaleY(d.onlak),
+        'r': scaleX.bandwidth()/2,
+        'fill': '#666',
+        'stroke': 'white',
+        'stroke-width': 2,
+        id: (d) => d.id,
+    })
+    svg.select('circle#elso').attr('fill', '#FF7BAC')
 
 
-//domain and range: top is the svg height-50
-let scaleY = d3.scaleLinear([0, d3.max(districts, d=>d.onlak)], [350,50])
-let scaleX = d3.scaleBand().domain(districts.map(d=>d.name)).rangeRound([50,780]).paddingOuter(0).paddingInner(.2)
-
-/* AXES - the axises, somehow the translateX didnot work */
-
-let axisX = d3.axisBottom(scaleX)
-let axisY = d3.axisLeft(scaleY)
-let gridY = d3.axisLeft(scaleY)
-axisY.ticks(5)
-axisX.tickSize(0)
-gridY.tickSize(-730).ticks(5).tickFormat('').tickSizeOuter(0)
-//gridY
-svg.append('g').attr('transform', 'translate(50,0)').call(gridY).selectAll('line').attrs({
-    'stroke': 'white',
-    'stroke-dasharray': '3,9'
 })
-//titleX
-svg.append('g').attr('transform','translate(0,350)').attr('color','white').call(axisX).selectAll('text').attrs({
-    'font-size': 15,
-    'transform': 'rotate(-60), translate(-30,0)',
-})
-//titleY
-svg.append('g').style('font-size', '12px').attrs({
-    'transform': 'translate(50,0)',
-    'color': 'white',
-}).call(axisY)
 
-/* CHART - the content of the chart */
-
-svg.selectAll('rect').data(districts).enter().append('rect').attrs({
-    'x': d => scaleX(d.name),
-    'y': (d) => scaleY(d.onlak),
-    'width': scaleX.bandwidth(),
-    'height': (d) => scaleY(0) - scaleY(d.onlak),
-    id: (d,i) => d.id,
-    'fill': '#808080',
-    'stroke': 'white',
-    'fill-opacity': .6,
-    'stroke-width': 2,
-})
-//svg.select('rect#elso').attr('fill', '#FFB0CD')
-svg.select('rect#elso').attr('fill', 'white')
-
-//if u saved the script above to a bars variable: to access the html item: using .nodes() method to access the _groups
-/* let ker1 = bars.nodes()[0]
-console.log(bars) */
-
-//circle at the top of the bars
-svg.selectAll('circle').data(districts).enter().append('circle').attrs({
-    'cx': d => scaleX(d.name) + scaleX.bandwidth()/2,
-    'cy': (d) => scaleY(d.onlak),
-    'r': scaleX.bandwidth()/2,
-    'fill': '#666',
-    'stroke': 'white',
-    'stroke-width': 2,
-    id: (d) => d.id,
-})
-svg.select('circle#elso').attr('fill', '#FF7BAC')
 
