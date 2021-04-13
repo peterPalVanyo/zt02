@@ -1,5 +1,7 @@
+$main-color: #666;
+
 body {
-    background-color: #222;
+    background-color: $main-color;
     margin: 0;
     padding: 0;
     display: flex;
@@ -10,10 +12,7 @@ body {
 }
 svg {
     box-shadow: 10px 10px 15px rgba(0,0,0,0.2);
+    & rect {
+        filter: drop-shadow(3px 3px 3px rgba(0, 0, 0, 0.8));
+    }
 }
-svg rect {
-    filter: drop-shadow(3px 3px 3px rgba(0, 0, 0, 0.8));
-}
-/* #valid1 {
-    fill: green;
-} */
