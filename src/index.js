@@ -32,7 +32,7 @@ const yAxisGroup = svg.append('g').attrs({
 
 
 
-d3.json('./assets/districts.json').then(districts => {
+d3.json('../assets/districts.json').then(districts => {
 
     //domain and range: top is the svg height-50
     let scaleY = d3.scaleLinear([0, d3.max(districts, d=>d.onlak)], [graphHeight,0])
