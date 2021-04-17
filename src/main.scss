@@ -1,22 +1,40 @@
-$main-color: pink;
+$canvas-light: #adaea5;
+$canvas-dark: #222220;
+$pen: #f4f4f4;
+$pen-dark: #82837c;
+$brand-dark: #336222;
+$brand-middle: #5bae3d;
+$brand-light: #9dce8b;
 
-body {
-    background-color: $main-color;
+*, *::after, *::before {
     margin: 0;
     padding: 0;
+    box-sizing: inherit;
+}
+html {
+    font-size: 62.5%;
+}
+body {
+    box-sizing: border-box;
+    font-size: 1.6rem;
+    font-weight: 400;
+    line-height: 1.7;
+    color: $pen;
+    overflow: hidden;
+}
+section{
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     width: 100%;
-}
-svg {
-    box-shadow: 10px 10px 15px rgba(0,0,0,0.2);
-    & rect {
-        filter: drop-shadow(3px 3px 3px rgba(0, 0, 0, 0.8));
+    &#chart2 {
+        background-color: $canvas-light;
     }
-}
-img {
-    width: 600px;
-    height: 50px;
+    svg {
+        //box-shadow: 10px 10px 15px rgba(0,0,0,0.2);
+        & rect {
+            filter: drop-shadow(4px 3px 5px rgba(0, 0, 0, 0.3));
+        }
+    }
 }
