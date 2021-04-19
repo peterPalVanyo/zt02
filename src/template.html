@@ -3,10 +3,58 @@
 
 <head>
     <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <title>D3 template</title>
 </head>
 <body>
-    <section id="hero"></section>
-    <section id="chart2"></section>
+    <div id="bigcontainer">
+        <section id="hero">
+            <div id="hero-bg"></div>
+            <div id="hero-k01">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 100" xml:space="preserve">
+                    <path style="fill:#336222;stroke:#222220;stroke-width:0.9084;" d="M46.8,83.2V16.4c0-2.9,1.1-5.5,3.2-7.6c2.1-2.1,4.7-3.2,7.6-3.2
+                    h34.9c2.9,0,5.4,1.1,7.5,3.2c2.1,2.1,3.2,4.7,3.2,7.6v66.9c0,3-1.1,5.5-3.2,7.6c-2.1,2.1-4.6,3.2-7.6,3.2H57.6c-3,0-5.6-1.1-7.7-3.2
+                    C47.8,88.7,46.8,86.2,46.8,83.2z M92,82.8V16.9H58v65.9H92z M130.1,82.8h17.2V16.9h-16.9c-1.6,0-2.9-0.5-4-1.6
+                    c-1.1-1.1-1.6-2.4-1.6-4c0-1.6,0.5-2.9,1.6-4c1.1-1.1,2.4-1.6,4-1.6h28.1v77.1h11.2V59.5c0-1.5,0.5-2.8,1.6-3.9
+                    c1.1-1.1,2.4-1.7,4-1.7s2.9,0.5,4,1.6c1.1,1.1,1.6,2.4,1.6,4v28.9c0,1.6-0.5,2.9-1.6,4c-1.1,1.1-2.4,1.6-4,1.6h-45.1
+                    c-1.6,0-2.9-0.6-4-1.7c-1.1-1.1-1.6-2.5-1.6-4c0-1.5,0.5-2.8,1.6-3.9C127.2,83.4,128.5,82.8,130.1,82.8z M202.7,88.5V11.4
+                    c0-1.6,0.5-2.9,1.6-4.1c1.1-1.1,2.4-1.7,4-1.7s2.9,0.6,4,1.7c1.1,1.1,1.6,2.5,1.6,4.1v45.6l30.1-25.6c1.3-1.1,2.7-1.6,4.2-1.6
+                    c1.6,0,2.9,0.6,4,1.7c1.1,1.1,1.6,2.5,1.6,4c0,1.6-0.6,3-1.7,3.9l-23.5,19.8l28.9,25.4c1.2,0.9,1.7,2.2,1.7,3.7c0,1.5-0.5,2.8-1.6,4
+                    c-1.1,1.2-2.4,1.8-3.9,1.8c-1.6,0-2.9-0.5-4.1-1.5l-29.8-25.9l-5.9,4.9v16.9c0,1.6-0.5,2.9-1.6,4c-1.1,1.1-2.4,1.6-4,1.6
+                    s-2.9-0.5-4-1.6C203.2,91.4,202.7,90.1,202.7,88.5z" />
+                </svg>
+            </div>
+            <div id="hero-info">
+                <div class="container">
+                    <p>Adatláttatunk:<br>az első kerület <span>(01k)</span> elhelyezése adatok, információmorzsák segítségével a főváros térképén a többi kerülettel összevetésben.</p>
+                </div>
+            </div>
+        </section>
+        <section id="chart2">
+            <div class="title">
+                <h1>Ö</h1><h1>n</h1><h1>k</h1><h1>o</h1><h1>r</h1><h1>m</h1><h1>á</h1><h1>n</h1><h1>y</h1><h1>z</h1><h1>a</h1><h1>t</h1><h1>i</h1><h1>l</h1><h1>a</h1><h1>k</h1><h1>á</h1><h1>s</h1><h1>á</h1><h1>l</h1><h1>l</h1><h1>o</h1><h1>m</h1><h1>á</h1><h1>m</h1><h1>y</h1>
+            </div>
+            <div class="circlecontainer">
+                <svg id="circle" width="100" height="100" viewBox="0 0 100 100">
+                    <filter id="blurMe" width="120%" height="120%">
+                        <feGaussianBlur in="SourceGraphic" stdDeviation="6" />
+                    </filter>
+                    <circle cx="50" cy="50" r="50" />
+                </svg>
+            </div>
+            <h3>A kerület a középmezőny tetején helyezkedik el, tizedik <span>1424</span> önkormányzati lakással. Ugyanakkor a teljes
+            lakásállomány arányában a második helyen áll: <span>8.4%</span> az önkormányzati tulajdonú lakások aránya. Ezt csak a nyolcadik
+            kerület fejeli meg 9.5%-al.</h3>
+            <div class="chartbtns">
+                <div id="chart2container"></div>
+                <div class="btns">
+                    <button class="selected">Kerületek szerint</button>
+                    <button>Nagyság szerint</button>
+                </div>
+            </div>
+            <img class="legend" src="./assets/legend2.svg" alt="legend2">
+        </section>
+    </div>
 </body>
 </html>

@@ -9,7 +9,7 @@ let dim = {
     width: 600,
     height: 300
 }
-let svg = d3.select('#chart2').append('svg').attrs(dim).style('background', '#adaea5')
+let svg = d3.select('#chart2container').append('svg').attrs(dim).style('background', '#adaea5')
 let margin = {top:20, bottom:50,left:40,right:10}
 const graphWidth = dim.width - margin.left - margin.right
 const graphHeight = dim.height - margin.top - margin.bottom
