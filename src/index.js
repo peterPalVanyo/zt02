@@ -1,10 +1,18 @@
 import * as d3 from 'd3'
 import {attrs} from './selmulti'
 import './main.scss'
-import districts from './assets/districts.json'
+import keruletmin from './assets/keruletmin.json'
+
+const setColorByInner = function (inner) {
+    let color
+    if (inner == 1) color = '#336222'
+    if (inner == 2) color = '#5bae3d'
+    if (inner == 3) color = '#9dce8b'
+    return color
+}
 
 /* IF U WANT TO SORT OUT */
-//districts.sort((a,b)=>a.onlak - b.onlak)
+//keruletmin.sort((a,b)=>a.onlak - b.onlak)
 let dim = {
     width: 600,
     height: 300
@@ -29,8 +37,8 @@ const graph = svg.append('g').attrs({
     transform: `translate(${margin.left}, ${margin.top})`
 })
 //domain and range: top is the svg height-50
-let scaleY = d3.scaleLinear([0, d3.max(districts, d=>d.onlak)], [graphHeight,0])
-let scaleX = d3.scaleBand().domain(districts.map(d=>d.name)).rangeRound([0,graphWidth]).paddingOuter(.3).paddingInner(.3)
+let scaleY = d3.scaleLinear([0, d3.max(keruletmin, d=>d.onlak)], [graphHeight,0])
+let scaleX = d3.scaleBand().domain(keruletmin.map(d=>d.name)).rangeRound([0,graphWidth]).paddingOuter(.3).paddingInner(.3)
 /* AXES - the axises, somehow the translateX didnot work */
 let axisX = d3.axisBottom(scaleX)
 let axisY = d3.axisLeft(scaleY)
@@ -57,7 +65,7 @@ d3.selectAll('#yaxis text').attrs({
     'color': '#f4f4f4',
 })
 /* CHART - the content of the chart */
-graph.selectAll('rect').data(districts).enter().append('rect').attrs({
+graph.selectAll('rect').data(keruletmin).enter().append('rect').attrs({
     'x': d => scaleX(d.name),
     //adjust the rounded rect widh bandwidth 1
     'y': (d) => scaleY(d.onlak) - scaleX.bandwidth()/2,
@@ -67,24 +75,26 @@ graph.selectAll('rect').data(districts).enter().append('rect').attrs({
     //adjust the runded rect widh bandwidth 2 
     'height': (d) => scaleY(0) - scaleY(d.onlak) + scaleX.bandwidth()/2,
     'id': (d,i) => d.id,
-    'fill': '#5bae3d',
+    'fill': (d) => setColorByInner(d.inner),
     'stroke': '#222220',
     'fill-opacity': 1,
     'stroke-width': 1.5,
 })
-svg.select('rect#elso').attr('fill', '#336222')
+svg.select('rect#bp01').attr('fill', '#336222')
 //if u saved the script above to a bars variable: to access the html item: using .nodes() method to access the _groups
 /* let ker1 = bars.nodes()[0]
 console.log(bars) */
 
 //circle at the top of the bars
-graph.selectAll('circle').data(districts).enter().append('circle').attrs({
+graph.selectAll('circle').data(keruletmin).enter().append('circle').attrs({
     'cx': d => scaleX(d.name) + scaleX.bandwidth()/2,
     'cy': (d) => scaleY(d.onlak),
     'r': scaleX.bandwidth()/2,
-    'fill': '#336222',
+    'fill': (d) => d.side === 'buda' ? '#336222' : '#5bae3d',
     'stroke': '#222220',
     'stroke-width': 1.5,
     id: (d) => d.id,
 })
-svg.select('circle#elso').attr('fill', '#9dce8b')
+//svg.select('circle#bp01').attr('fill', '#9dce8b')
+
+
