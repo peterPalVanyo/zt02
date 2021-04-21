@@ -42,6 +42,12 @@ button {
   display: inline-block;
   font-size: 2rem;
   padding: 1rem 2rem;
+  &:hover {
+    color: darken($color: $pen, $amount: 15);
+  }
+  &:focus {
+    outline: none;
+  }
   &.selected {
     border-bottom: .4rem solid $pen;
   }

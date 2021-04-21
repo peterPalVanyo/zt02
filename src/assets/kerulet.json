@@ -17,7 +17,8 @@
     "zold_ter": 0.029,
     "rekr": 6561,
     "rekr_lak": 3.8,
-    "inner": 1
+    "inner": 1,
+    "ker": 1
   },
   {
     "name": "02ker",
@@ -37,7 +38,8 @@
     "zold_ter": 0.007,
     "rekr": 6544,
     "rekr_lak": 13.7,
-    "inner": 2
+    "inner": 2,
+    "ker": 2
   },
   {
     "name": "03ker",
@@ -57,7 +59,8 @@
     "zold_ter": 0.059,
     "rekr": 625415,
     "rekr_lak": 0.2,
-    "inner": 2
+    "inner": 2,
+    "ker": 3
   },
   {
     "name": "04ker",
@@ -77,7 +80,8 @@
     "zold_ter": 0.072,
     "rekr": 80052,
     "rekr_lak": 1.2,
-    "inner": 2
+    "inner": 2,
+    "ker": 4
   },
   {
     "name": "05ker",
@@ -97,7 +101,8 @@
     "zold_ter": 0.017,
     "rekr": 930,
     "rekr_lak": 27.9,
-    "inner": 1
+    "inner": 1,
+    "ker": 5
   },
   {
     "name": "06ker",
@@ -117,7 +122,8 @@
     "zold_ter": 0.006,
     "rekr": 10823,
     "rekr_lak": 3.6,
-    "inner": 1
+    "inner": 1,
+    "ker": 6
   },
   {
     "name": "07ker",
@@ -137,7 +143,8 @@
     "zold_ter": 0.016,
     "rekr": 5910,
     "rekr_lak": 8.7,
-    "inner": 1
+    "inner": 1,
+    "ker": 7
   },
   {
     "name": "08ker",
@@ -157,7 +164,8 @@
     "zold_ter": 0.029,
     "rekr": 8447,
     "rekr_lak": 9.1,
-    "inner": 1
+    "inner": 1,
+    "ker": 8
   },
   {
     "name": "09ker",
@@ -177,7 +185,8 @@
     "zold_ter": 0.06,
     "rekr": 22044,
     "rekr_lak": 2.7,
-    "inner": 1
+    "inner": 1,
+    "ker": 9
   },
   {
     "name": "10ker",
@@ -197,7 +206,8 @@
     "zold_ter": 0.036,
     "rekr": 53365,
     "rekr_lak": 1.5,
-    "inner": 2
+    "inner": 2,
+    "ker": 10
   },
   {
     "name": "11ker",
@@ -217,7 +227,8 @@
     "zold_ter": 0.055,
     "rekr": 87659,
     "rekr_lak": 1.7,
-    "inner": 2
+    "inner": 2,
+    "ker": 11
   },
   {
     "name": "12ker",
@@ -237,7 +248,8 @@
     "zold_ter": 0.01,
     "rekr": 25114,
     "rekr_lak": 2.3,
-    "inner": 2
+    "inner": 2,
+    "ker": 12
   },
   {
     "name": "13ker",
@@ -257,7 +269,8 @@
     "zold_ter": 0.062,
     "rekr": 54000,
     "rekr_lak": 2.3,
-    "inner": 2
+    "inner": 2,
+    "ker": 13
   },
   {
     "name": "14ker",
@@ -277,7 +290,8 @@
     "zold_ter": 0.062,
     "rekr": 67347,
     "rekr_lak": 1.8,
-    "inner": 2
+    "inner": 2,
+    "ker": 14
   },
   {
     "name": "15ker",
@@ -297,7 +311,8 @@
     "zold_ter": 0.028,
     "rekr": 69911,
     "rekr_lak": 1.1,
-    "inner": 3
+    "inner": 3,
+    "ker": 15
   },
   {
     "name": "16ker",
@@ -317,7 +332,8 @@
     "zold_ter": 0.019,
     "rekr": 64179,
     "rekr_lak": 1.2,
-    "inner": 3
+    "inner": 3,
+    "ker": 16
   },
   {
     "name": "17ker",
@@ -337,7 +353,8 @@
     "zold_ter": 0.012,
     "rekr": 94269,
     "rekr_lak": 0.9,
-    "inner": 3
+    "inner": 3,
+    "ker": 17
   },
   {
     "name": "18ker",
@@ -357,7 +374,8 @@
     "zold_ter": 0.026,
     "rekr": 53522,
     "rekr_lak": 1.9,
-    "inner": 3
+    "inner": 3,
+    "ker": 18
   },
   {
     "name": "19ker",
@@ -377,7 +395,8 @@
     "zold_ter": 0.05,
     "rekr": 29234,
     "rekr_lak": 2,
-    "inner": 3
+    "inner": 3,
+    "ker": 19
   },
   {
     "name": "20ker",
@@ -397,7 +416,8 @@
     "zold_ter": 0.06,
     "rekr": 54874,
     "rekr_lak": 1.2,
-    "inner": 3
+    "inner": 3,
+    "ker": 20
   },
   {
     "name": "21ker",
@@ -417,7 +437,8 @@
     "zold_ter": 0.084,
     "rekr": 40685,
     "rekr_lak": 1.9,
-    "inner": 3
+    "inner": 3,
+    "ker": 21
   },
   {
     "name": "22ker",
@@ -437,7 +458,8 @@
     "zold_ter": 0.01,
     "rekr": 17611,
     "rekr_lak": 3.2,
-    "inner": 3
+    "inner": 3,
+    "ker": 22
   },
   {
     "name": "23ker",
@@ -457,6 +479,7 @@
     "zold_ter": 0.005,
     "rekr": 3747,
     "rekr_lak": 6.1,
-    "inner": 3
+    "inner": 3,
+    "ker": 23
   }
 ]

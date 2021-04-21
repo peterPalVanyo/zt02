@@ -1,0 +1,65 @@
+[33mcommit 9ae93df011415ec1dc40431b8c87a9e1d230d780[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: peterPalVanyo <vanyo.peter.pal@gmail.com>
+Date:   Tue Apr 20 13:04:25 2021 +0200
+
+    change json and set bar colors by data
+
+[33mcommit c0bf0e27b40289f500fda309b2c77ed632eb5fe5[m
+Author: peterPalVanyo <vanyo.peter.pal@gmail.com>
+Date:   Mon Apr 19 15:40:43 2021 +0200
+
+    scss design of the hero and 2nd chart
+
+[33mcommit 331aa18433b7814552aa4b8fad59d30f55b8e11b[m
+Author: peterPalVanyo <vanyo.peter.pal@gmail.com>
+Date:   Sat Apr 17 21:36:40 2021 +0200
+
+    style the html scrollbar
+
+[33mcommit 4ad681ca2214f6b9875afed3b6f5c87c76f15dd8[m
+Author: peterPalVanyo <vanyo.peter.pal@gmail.com>
+Date:   Sat Apr 17 20:05:33 2021 +0200
+
+    basic style colors and rounding the rect
+
+[33mcommit fea731e0f197771adce3ef4b59eae79acb02b958[m
+Author: peterPalVanyo <vanyo.peter.pal@gmail.com>
+Date:   Thu Apr 15 11:41:07 2021 +0200
+
+    fixing: missed the loader for dev config
+
+[33mcommit 681b12666c65f4e77821aaf07e2742f6b0c823e1[m
+Author: peterPalVanyo <vanyo.peter.pal@gmail.com>
+Date:   Thu Apr 15 11:14:19 2021 +0200
+
+    loaders and minifiers
+
+[33mcommit bc1cde28397ecfc73307e35cf56b13058eb7585b[m
+Author: peterPalVanyo <vanyo.peter.pal@gmail.com>
+Date:   Wed Apr 14 02:47:21 2021 +0200
+
+    separate dev and prod config, using dev serve
+
+[33mcommit 28970e55165fec1d6d2ec269e8b031f766a65bbe[m
+Author: peterPalVanyo <vanyo.peter.pal@gmail.com>
+Date:   Tue Apr 13 19:41:50 2021 +0200
+
+    set the build phase of the webpack
+
+[33mcommit 08321e4b6862c9c8df285ca1a12c704d45e6bb87[m
+Author: peterPalVanyo <vanyo.peter.pal@gmail.com>
+Date:   Tue Apr 6 18:11:01 2021 +0200
+
+    add graph group inside the svg
+
+[33mcommit d0c3d112a1e481ed75024a68a53262e54b71f6f4[m
+Author: peterPalVanyo <vanyo.peter.pal@gmail.com>
+Date:   Mon Apr 5 15:27:34 2021 +0200
+
+    change the data with outside json
+
+[33mcommit 3ca3bc4abdf2ffb0fddc7719bcfdc3bafcbc90ed[m
+Author: peterPalVanyo <vanyo.peter.pal@gmail.com>
+Date:   Sat Apr 3 14:36:24 2021 +0200
+
+    bars with one data
