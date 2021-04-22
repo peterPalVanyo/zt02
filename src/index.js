@@ -1,7 +1,23 @@
 import * as d3 from 'd3'
 import {attrs} from './selmulti'
+import { tip as d3tip } from 'd3-v6-tip'
 import './main.scss'
 import keruletmin from './assets/keruletmin.json'
+
+
+const tip = d3tip().attr('class', 'tip').html( (e, d) => {
+    let content = "<div>Önk. lakások</div>"
+    content += `<div>${d.name}: ${d.onlak}</div>`
+    return content
+})
+
+
+
+/* const tip = d3.tip().attr('class', 'tip').html(d=>{
+    return `<p>helloBello\<>`
+}) */
+
+
 
 const setColorByInner = function (inner) {
     let color
@@ -92,16 +108,7 @@ const renderOnlak = function () {
         'color': '#f4f4f4',
     })
 
-    const tooltip = graph.append('div').style("font-family", "'Open Sans', sans-serif")
-      .style("font-size", "15px")
-      .style("z-index", "10")
-      .style("background-color", "#A7CDFA")
-      .style("color", "#B380BA")
-      .style("border", "solid")
-      .style("border-color", "#A89ED6")
-      .style("padding", "5px")
-      .style("border-radius", "2px")
-      .style("visibility", "hidden")
+    graph.call(tip)
 
     /* CHART - the content of the chart */
     graph.selectAll('rect').data(keruletmin).enter().append('rect').attrs({
@@ -118,21 +125,20 @@ const renderOnlak = function () {
         'stroke': '#222220',
         'fill-opacity': 1,
         'stroke-width': 1.5,
-    }).on('mouseover', function (e) {
-        let el = d3.select(this).attr('fill', '#f4f4f4')
-        let eld = el.data()[0]
-        d3.select(`circle.${eld.id}`).attr('fill', '#f4f4f4')
-        graph.append('text').attrs({
-            'y':d3.pointer(e)[1],
-            'x':d3.pointer(e)[0],
-            'text-anchor': 'middle'
-        }).text(`önk. lakások: ${eld.onlak}`)
-    }).on('mouseout', function (d) {
-        let el = d3.select(this)
-        let eld = el.data()[0]
+    }).on('mouseover', function (e, d) {
+        d3.select(this).attr('fill', '#f4f4f4')
+        d3.select(`circle.${d.id}`).attr('fill', '#f4f4f4')
+        console.log(this.getBoundingClientRect())
+        let recheight = this.getBoundingClientRect().height
+        tip.offset(function() {
+            return [-10, 0]
+        })
+        tip.show(e,d)
+
+    }).on('mouseout', function (e, d) {
         d3.select(this).attr('fill', (d) => setColorByInner(d.inner))
-        d3.select(`circle.${eld.id}`).attr('fill', (d) => d.side === 'buda' ? '#336222' : '#5bae3d')
-        graph.selectAll('text').remove()
+        d3.select(`circle.${d.id}`).attr('fill', (d) => d.side === 'buda' ? '#336222' : '#5bae3d')
+        tip.hide()
     })
     //if u saved the script above to a bars variable: to access the html item: using .nodes() method to access the _groups
     /* let ker1 = bars.nodes()[0]
@@ -147,21 +153,15 @@ const renderOnlak = function () {
         'stroke': '#222220',
         'stroke-width': 1.5,
         'class': (d) => d.id,
-    }).on('mouseover', function (e) {
-        let el = d3.select(this).attr('fill', '#f4f4f4')
-        let eld = el.data()[0]
-        d3.select(`rect.${eld.id}`).attr('fill', '#f4f4f4')
-        graph.append('text').attrs({
-            'y':d3.pointer(e)[1],
-            'x':d3.pointer(e)[0],
-            'text-anchor': 'middle'
-        }).text(`önk. lakások: ${eld.onlak}`) 
-    }).on('mouseout', function (d) {
-        let el = d3.select(this)
-        let eld = el.data()[0]
+    }).on('mouseover', function (e,d) {
+        d3.select(this).attr('fill', '#f4f4f4')
+        d3.select(`rect.${d.id}`).attr('fill', '#f4f4f4')
+        tip.show(e,d)
+
+    }).on('mouseout', function (e,d) {
         d3.select(this).attr('fill', (d) => d.side === 'buda' ? '#336222' : '#5bae3d')
-        d3.select(`rect.${eld.id}`).attr('fill', (d) => setColorByInner(d.inner))
-        graph.selectAll('text').remove()
+        d3.select(`rect.${d.id}`).attr('fill', (d) => setColorByInner(d.inner))
+        tip.hide()
     })
 }
 
