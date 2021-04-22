@@ -41,12 +41,12 @@ let dim = {
     height: 300
 }
 
+
 let margin = {top:20, bottom:50,left:40,right:10}
 const graphWidth = dim.width - margin.left - margin.right
 const graphHeight = dim.height - margin.top - margin.bottom
 const renderOnlak = function () {
     svg = d3.select('#chart2container').append('svg').attrs(dim).style('background', '#adaea5')
-    
     const xAxisGroup = svg.append('g').attrs({
         color: 'white',
         transform: `translate(${margin.left}, ${graphHeight+margin.top})`,
@@ -91,6 +91,18 @@ const renderOnlak = function () {
     d3.selectAll('#yaxis text').attrs({
         'color': '#f4f4f4',
     })
+
+    const tooltip = graph.append('div').style("font-family", "'Open Sans', sans-serif")
+      .style("font-size", "15px")
+      .style("z-index", "10")
+      .style("background-color", "#A7CDFA")
+      .style("color", "#B380BA")
+      .style("border", "solid")
+      .style("border-color", "#A89ED6")
+      .style("padding", "5px")
+      .style("border-radius", "2px")
+      .style("visibility", "hidden")
+
     /* CHART - the content of the chart */
     graph.selectAll('rect').data(keruletmin).enter().append('rect').attrs({
         'x': d => scaleX(d.name),
@@ -101,13 +113,27 @@ const renderOnlak = function () {
         'width': scaleX.bandwidth(),
         //adjust the runded rect widh bandwidth 2 
         'height': (d) => scaleY(0) - scaleY(d.onlak) + scaleX.bandwidth()/2,
-        'id': (d,i) => d.id,
+        'class': (d,i) => d.id,
         'fill': (d) => setColorByInner(d.inner),
         'stroke': '#222220',
         'fill-opacity': 1,
         'stroke-width': 1.5,
+    }).on('mouseover', function (e) {
+        let el = d3.select(this).attr('fill', '#f4f4f4')
+        let eld = el.data()[0]
+        d3.select(`circle.${eld.id}`).attr('fill', '#f4f4f4')
+        graph.append('text').attrs({
+            'y':d3.pointer(e)[1],
+            'x':d3.pointer(e)[0],
+            'text-anchor': 'middle'
+        }).text(`önk. lakások: ${eld.onlak}`)
+    }).on('mouseout', function (d) {
+        let el = d3.select(this)
+        let eld = el.data()[0]
+        d3.select(this).attr('fill', (d) => setColorByInner(d.inner))
+        d3.select(`circle.${eld.id}`).attr('fill', (d) => d.side === 'buda' ? '#336222' : '#5bae3d')
+        graph.selectAll('text').remove()
     })
-    svg.select('rect#bp01').attr('fill', '#336222')
     //if u saved the script above to a bars variable: to access the html item: using .nodes() method to access the _groups
     /* let ker1 = bars.nodes()[0]
     console.log(bars) */
@@ -120,12 +146,28 @@ const renderOnlak = function () {
         'fill': (d) => d.side === 'buda' ? '#336222' : '#5bae3d',
         'stroke': '#222220',
         'stroke-width': 1.5,
-        id: (d) => d.id,
+        'class': (d) => d.id,
+    }).on('mouseover', function (e) {
+        let el = d3.select(this).attr('fill', '#f4f4f4')
+        let eld = el.data()[0]
+        d3.select(`rect.${eld.id}`).attr('fill', '#f4f4f4')
+        graph.append('text').attrs({
+            'y':d3.pointer(e)[1],
+            'x':d3.pointer(e)[0],
+            'text-anchor': 'middle'
+        }).text(`önk. lakások: ${eld.onlak}`) 
+    }).on('mouseout', function (d) {
+        let el = d3.select(this)
+        let eld = el.data()[0]
+        d3.select(this).attr('fill', (d) => d.side === 'buda' ? '#336222' : '#5bae3d')
+        d3.select(`rect.${eld.id}`).attr('fill', (d) => setColorByInner(d.inner))
+        graph.selectAll('text').remove()
     })
-    //svg.select('circle#bp01').attr('fill', '#9dce8b')
 }
 
 renderOnlak()
+
+console.log()
 
 
 
