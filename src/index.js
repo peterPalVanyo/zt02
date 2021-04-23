@@ -4,20 +4,11 @@ import { tip as d3tip } from 'd3-v6-tip'
 import './main.scss'
 import keruletmin from './assets/keruletmin.json'
 
-
 const tip = d3tip().attr('class', 'tip').html( (e, d) => {
     let content = "<div>Önk. lakások</div>"
     content += `<div>${d.name}: ${d.onlak}</div>`
     return content
 })
-
-
-
-/* const tip = d3.tip().attr('class', 'tip').html(d=>{
-    return `<p>helloBello\<>`
-}) */
-
-
 
 const setColorByInner = function (inner) {
     let color
@@ -29,9 +20,26 @@ const setColorByInner = function (inner) {
 let btnsOnlak = document.getElementsByClassName('btn-onlak')
 let btnOnlakDis = document.getElementById('btn-onlak-dis')
 let btnOnlakSiz = document.getElementById('btn-onlak-siz')
-let svg
-
-
+//svg and graph
+let graph
+let dim = {
+    width: 600,
+    height: 300
+}
+let svg = d3.select('#chart2container').append('svg').attrs(dim).style('background', '#adaea5')
+let margin = {top:20, bottom:50,left:40,right:10}
+const graphWidth = dim.width - margin.left - margin.right
+const graphHeight = dim.height - margin.top - margin.bottom
+const xAxisGroup = svg.append('g').attrs({
+    color: 'white',
+    transform: `translate(${margin.left}, ${graphHeight+margin.top})`,
+    id: 'xaxis'
+})
+const yAxisGroup = svg.append('g').attrs({
+    color: 'white',
+    id: 'yaxis',
+    transform: `translate(${margin.left}, ${margin.top})`
+})
 
 for(let i = 0; i < btnsOnlak.length; i++) {
     btnsOnlak[i].addEventListener('click', () => {
@@ -41,48 +49,26 @@ for(let i = 0; i < btnsOnlak.length; i++) {
         }
     })
 }
+//btns
 btnOnlakDis.addEventListener('click', () => {
-    svg.remove()
+    graph.remove()
     keruletmin.sort((a, b) => a.ker - b.ker )
     renderOnlak()
 })
 btnOnlakSiz.addEventListener('click', () => {
-    svg.remove()
+    graph.remove()
     keruletmin.sort((a, b) => b.onlak - a.onlak )
     renderOnlak()
 })
-
-let dim = {
-    width: 600,
-    height: 300
-}
-
-
-let margin = {top:20, bottom:50,left:40,right:10}
-const graphWidth = dim.width - margin.left - margin.right
-const graphHeight = dim.height - margin.top - margin.bottom
+//render
 const renderOnlak = function () {
-    svg = d3.select('#chart2container').append('svg').attrs(dim).style('background', '#adaea5')
-    const xAxisGroup = svg.append('g').attrs({
-        color: 'white',
-        transform: `translate(${margin.left}, ${graphHeight+margin.top})`,
-        id: 'xaxis'
-    })
-    const yAxisGroup = svg.append('g').attrs({
-        color: 'white',
-        id: 'yaxis',
-        transform: `translate(${margin.left}, ${margin.top})`
-    })
-    const graph = svg.append('g').attrs({
+    graph = svg.append('g').attrs({
         width: graphWidth,
         height: graphHeight,
         transform: `translate(${margin.left}, ${margin.top})`
     })
-    
-    //domain and range: top is the svg height-50
     let scaleY = d3.scaleLinear([0, d3.max(keruletmin, d=>d.onlak)], [graphHeight,0])
-    let scaleX = d3.scaleBand().domain(keruletmin.map(d=>d.name)).rangeRound([0,graphWidth]).paddingOuter(.3).paddingInner(.3)
-    /* AXES - the axises, somehow the translateX didnot work */
+    let scaleX = d3.scaleBand().domain(keruletmin.map(d=>d.name)).rangeRound([0,graphWidth]).paddingOuter(.3).paddingInner(.2)
     let axisX = d3.axisBottom(scaleX)
     let axisY = d3.axisLeft(scaleY)
     let gridY = d3.axisLeft(scaleY)
@@ -107,34 +93,28 @@ const renderOnlak = function () {
     d3.selectAll('#yaxis text').attrs({
         'color': '#f4f4f4',
     })
-
     graph.call(tip)
-
     /* CHART - the content of the chart */
     graph.selectAll('rect').data(keruletmin).enter().append('rect').attrs({
         'x': d => scaleX(d.name),
-        //adjust the rounded rect widh bandwidth 1
         'y': (d) => scaleY(d.onlak) - scaleX.bandwidth()/2,
         'rx': 7,
         'ry': 7,
         'width': scaleX.bandwidth(),
-        //adjust the runded rect widh bandwidth 2 
         'height': (d) => scaleY(0) - scaleY(d.onlak) + scaleX.bandwidth()/2,
         'class': (d,i) => d.id,
         'fill': (d) => setColorByInner(d.inner),
         'stroke': '#222220',
         'fill-opacity': 1,
-        'stroke-width': 1.5,
+        'stroke-width': 1.2,
     }).on('mouseover', function (e, d) {
         d3.select(this).attr('fill', '#f4f4f4')
         d3.select(`circle.${d.id}`).attr('fill', '#f4f4f4')
-        console.log(this.getBoundingClientRect())
-        let recheight = this.getBoundingClientRect().height
+        //console.log(this.getBoundingClientRect())
         tip.offset(function() {
             return [-10, 0]
         })
         tip.show(e,d)
-
     }).on('mouseout', function (e, d) {
         d3.select(this).attr('fill', (d) => setColorByInner(d.inner))
         d3.select(`circle.${d.id}`).attr('fill', (d) => d.side === 'buda' ? '#336222' : '#5bae3d')
@@ -144,14 +124,13 @@ const renderOnlak = function () {
     /* let ker1 = bars.nodes()[0]
     console.log(bars) */
     
-    //circle at the top of the bars
     graph.selectAll('circle').data(keruletmin).enter().append('circle').attrs({
         'cx': d => scaleX(d.name) + scaleX.bandwidth()/2,
         'cy': (d) => scaleY(d.onlak),
         'r': scaleX.bandwidth()/2,
         'fill': (d) => d.side === 'buda' ? '#336222' : '#5bae3d',
         'stroke': '#222220',
-        'stroke-width': 1.5,
+        'stroke-width': 1.2,
         'class': (d) => d.id,
     }).on('mouseover', function (e,d) {
         d3.select(this).attr('fill', '#f4f4f4')
@@ -166,8 +145,3 @@ const renderOnlak = function () {
 }
 
 renderOnlak()
-
-console.log()
-
-
-
