@@ -40,49 +40,108 @@ const yAxisGroup = svg.append('g').attrs({
     id: 'yaxis',
     transform: `translate(${margin.left}, ${margin.top})`
 })
+//scale
+let scaleY = d3.scaleLinear().range([graphHeight,0])
+let scaleX = d3.scaleBand().rangeRound([0,graphWidth]).paddingOuter(.3).paddingInner(.2)
+let axisX = d3.axisBottom(scaleX)
+let axisY = d3.axisLeft(scaleY)
+let gridY = d3.axisLeft(scaleY)
+axisY.ticks(5)
+axisX.tickSize(0)
+gridY.tickSize(-1*graphWidth).ticks(5).tickFormat('').tickSizeOuter(0)
+graph = svg.append('g').attrs({
+    width: graphWidth,
+    height: graphHeight,
+    transform: `translate(${margin.left}, ${margin.top})`
+})
+//gridY, if call to xAxisGroup: the later call diminish it
+graph.append('g').call(gridY).selectAll('line').attrs({
+    'stroke': '#f4f4f4',
+    'stroke-dasharray': '3,9'
+})
+graph.call(tip)
 
-for(let i = 0; i < btnsOnlak.length; i++) {
-    btnsOnlak[i].addEventListener('click', () => {
-        btnsOnlak[i].classList.add('selected')
-        for(let j=0; j < btnsOnlak.length; j++) {
-            if (j !== i) btnsOnlak[j].classList.remove('selected')
-        }
-    })
-}
-//btns
-btnOnlakDis.addEventListener('click', () => {
-    graph.remove()
-    keruletmin.sort((a, b) => a.ker - b.ker )
-    renderOnlak()
-})
-btnOnlakSiz.addEventListener('click', () => {
-    graph.remove()
-    keruletmin.sort((a, b) => b.onlak - a.onlak )
-    renderOnlak()
-})
 //render
-const renderOnlak = function () {
-    graph = svg.append('g').attrs({
-        width: graphWidth,
-        height: graphHeight,
-        transform: `translate(${margin.left}, ${margin.top})`
+const update = (data) => {
+    scaleY.domain([0, d3.max(data, d=>d.onlak)])
+    scaleX.domain(data.map(d=>d.name))
+
+    /* CHART - the content of the chart */
+    // the rectangles for the bars
+    const rects = graph.selectAll('rect').data(data)
+    rects.attrs({
+        'x': d => scaleX(d.name),
+        'y': (d) => scaleY(d.onlak) - scaleX.bandwidth()/2 +5,
+        'rx': 7,
+        'ry': 7,
+        'width': scaleX.bandwidth(),
+        'height': 0,
+        'id': (d,i) => d.id,
+        'fill': (d) => setColorByInner(d.inner),
+        'stroke': '#222220',
+        'fill-opacity': 1,
+        'stroke-width': 1.2,
+        'class': 'rectonlak'
+    }).transition().duration(1000).delay(1000).ease(d3.easeBounceOut).attr('height', (d) => scaleY(0) - scaleY(d.onlak) + scaleX.bandwidth()/2 - 5)
+
+    rects.enter().append('rect').attrs({
+        'x': d => scaleX(d.name),
+        'y': (d) => scaleY(d.onlak) - scaleX.bandwidth()/2 +5,
+        'rx': 7,
+        'ry': 7,
+        'width': scaleX.bandwidth(),
+        'height': (d) => scaleY(0) - scaleY(d.onlak) + scaleX.bandwidth()/2,
+        'id': (d,i) => d.id,
+        'fill': (d) => setColorByInner(d.inner),
+        'stroke': '#222220',
+        'fill-opacity': 1,
+        'stroke-width': 1.2,
+    }).on('mouseover', function (e, d) {
+        d3.select(this).attr('fill', '#f4f4f4')
+        d3.select(`circle#c${d.id}`).attr('fill', '#f4f4f4')
+        //console.log(this.getBoundingClientRect())
+        tip.offset(function() {
+            return [-10, 0]
+        })
+        tip.show(e,d)
+    }).on('mouseout', function (e, d) {
+        d3.select(this).attr('fill', (d) => setColorByInner(d.inner))
+        d3.select(`circle#c${d.id}`).attr('fill', (d) => d.side === 'buda' ? '#336222' : '#5bae3d')
+        tip.hide()
     })
-    let scaleY = d3.scaleLinear([0, d3.max(keruletmin, d=>d.onlak)], [graphHeight,0])
-    let scaleX = d3.scaleBand().domain(keruletmin.map(d=>d.name)).rangeRound([0,graphWidth]).paddingOuter(.3).paddingInner(.2)
-    let axisX = d3.axisBottom(scaleX)
-    let axisY = d3.axisLeft(scaleY)
-    let gridY = d3.axisLeft(scaleY)
-    axisY.ticks(5)
-    axisX.tickSize(0)
-    gridY.tickSize(-1*graphWidth).ticks(5).tickFormat('').tickSizeOuter(0)
-    //gridY, if call to xAxisGroup: the later call diminish it
-    graph.append('g').call(gridY).selectAll('line').attrs({
-        'stroke': '#f4f4f4',
-        'stroke-dasharray': '3,9'
+    //circles on the bars
+    const circls = graph.selectAll('circle').data(data)
+    circls.attrs({
+        'r': scaleX.bandwidth()/2,
+        'stroke': '#222220',
+        'stroke-width': 1.2,
+        'id': (d) => `c${d.id}`,
+    }).transition().duration(1000).attrs({
+        'cx': d => scaleX(d.name) + scaleX.bandwidth()/2,
+        'cy': (d) => scaleY(d.onlak),
+        'fill': (d) => d.side === 'buda' ? '#336222' : '#5bae3d'
+    })
+
+    circls.enter().append('circle').attrs({
+        'cx': d => scaleX(d.name) + scaleX.bandwidth()/2,
+        'cy': (d) => scaleY(d.onlak),
+        'r': scaleX.bandwidth()/2,
+        'fill': (d) => d.side === 'buda' ? '#336222' : '#5bae3d',
+        'stroke': '#222220',
+        'stroke-width': 1.2,
+        'id': (d) => `c${d.id}`,
+    }).on('mouseover', function (e,d) {
+        d3.select(this).attr('fill', '#f4f4f4')
+        d3.select(`rect#${d.id}`).attr('fill', '#f4f4f4')
+        tip.show(e,d)
+    }).on('mouseout', function (e,d) {
+        d3.select(this).attr('fill', (d) => d.side === 'buda' ? '#336222' : '#5bae3d')
+        d3.select(`rect#${d.id}`).attr('fill', (d) => setColorByInner(d.inner))
+        tip.hide()
     })
     //titleX
     xAxisGroup.call(axisX)
-    d3.selectAll('#xaxis text').attrs({
+     d3.selectAll('#xaxis text').attrs({
         'font-size': 14,
         'text-anchor': 'end',
         'color': '#222220',
@@ -93,55 +152,28 @@ const renderOnlak = function () {
     d3.selectAll('#yaxis text').attrs({
         'color': '#f4f4f4',
     })
-    graph.call(tip)
-    /* CHART - the content of the chart */
-    graph.selectAll('rect').data(keruletmin).enter().append('rect').attrs({
-        'x': d => scaleX(d.name),
-        'y': (d) => scaleY(d.onlak) - scaleX.bandwidth()/2,
-        'rx': 7,
-        'ry': 7,
-        'width': scaleX.bandwidth(),
-        'height': (d) => scaleY(0) - scaleY(d.onlak) + scaleX.bandwidth()/2,
-        'class': (d,i) => d.id,
-        'fill': (d) => setColorByInner(d.inner),
-        'stroke': '#222220',
-        'fill-opacity': 1,
-        'stroke-width': 1.2,
-    }).on('mouseover', function (e, d) {
-        d3.select(this).attr('fill', '#f4f4f4')
-        d3.select(`circle.${d.id}`).attr('fill', '#f4f4f4')
-        //console.log(this.getBoundingClientRect())
-        tip.offset(function() {
-            return [-10, 0]
-        })
-        tip.show(e,d)
-    }).on('mouseout', function (e, d) {
-        d3.select(this).attr('fill', (d) => setColorByInner(d.inner))
-        d3.select(`circle.${d.id}`).attr('fill', (d) => d.side === 'buda' ? '#336222' : '#5bae3d')
-        tip.hide()
-    })
-    //if u saved the script above to a bars variable: to access the html item: using .nodes() method to access the _groups
-    /* let ker1 = bars.nodes()[0]
-    console.log(bars) */
-    
-    graph.selectAll('circle').data(keruletmin).enter().append('circle').attrs({
-        'cx': d => scaleX(d.name) + scaleX.bandwidth()/2,
-        'cy': (d) => scaleY(d.onlak),
-        'r': scaleX.bandwidth()/2,
-        'fill': (d) => d.side === 'buda' ? '#336222' : '#5bae3d',
-        'stroke': '#222220',
-        'stroke-width': 1.2,
-        'class': (d) => d.id,
-    }).on('mouseover', function (e,d) {
-        d3.select(this).attr('fill', '#f4f4f4')
-        d3.select(`rect.${d.id}`).attr('fill', '#f4f4f4')
-        tip.show(e,d)
-
-    }).on('mouseout', function (e,d) {
-        d3.select(this).attr('fill', (d) => d.side === 'buda' ? '#336222' : '#5bae3d')
-        d3.select(`rect.${d.id}`).attr('fill', (d) => setColorByInner(d.inner))
-        tip.hide()
-    })
 }
 
-renderOnlak()
+update(keruletmin)
+
+//if u saved the script above to a bars variable: to access the html item: using .nodes() method to access the _groups
+/* let ker1 = bars.nodes()[0]
+console.log(bars) */
+
+//btns
+for(let i = 0; i < btnsOnlak.length; i++) {
+    btnsOnlak[i].addEventListener('click', () => {
+        btnsOnlak[i].classList.add('selected')
+        for(let j=0; j < btnsOnlak.length; j++) {
+            if (j !== i) btnsOnlak[j].classList.remove('selected')
+        }
+    })
+}
+btnOnlakDis.addEventListener('click', () => {
+    keruletmin.sort((a, b) => a.ker - b.ker )
+    update(keruletmin)
+})
+btnOnlakSiz.addEventListener('click', () => {
+    keruletmin.sort((a, b) => b.onlak - a.onlak )
+    update(keruletmin)
+})
