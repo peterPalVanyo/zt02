@@ -4,6 +4,10 @@ import { tip as d3tip } from 'd3-v6-tip'
 import './main.scss'
 import keruletmin from './assets/keruletmin.json'
 
+const tip1 = d3tip().attr('class', 'tip1').html((e,d) => {
+    return `<div>${d.name}:<br>${d.nep} lakos,<br>${d.ter} km2,<br>lakásonként ${d.lak_nep} fő</div>`
+}) 
+
 const tip = d3tip().attr('class', 'tip').html( (e, d) => {
     let content = "<div>Önk. lakások</div>"
     content += `<div>${d.name}: ${d.onlak}</div>`
@@ -20,8 +24,106 @@ const setColorByInner = function (inner) {
 let btnsOnlak = document.getElementsByClassName('btn-onlak')
 let btnOnlakDis = document.getElementById('btn-onlak-dis')
 let btnOnlakSiz = document.getElementById('btn-onlak-siz')
-//svg and graph
-let graph
+//svg and graph1
+let dim1 = {
+    width: 700,
+    height: 600
+}
+let svg1 = d3.select('#chart1container').append('svg').attrs(dim1).style('background', 'transparent')
+let margin1 = {top:30, bottom:30,left:50,right:50}
+const graph1width = dim1.width - margin1.left - margin1.right
+const graph1height = dim1.height - margin1.top - margin1.bottom
+let graph1 = svg1.append('g').attrs({
+    width: graph1width,
+    height: graph1height,
+    transform: `translate(${margin1.left}, ${margin1.top})`
+})
+graph1.append('g').attrs({
+    transform: `translate(0, ${graph1height})`,
+    id: 'x-grid1',
+    class: 'grid'
+})
+graph1.append('g').attrs({
+    id: 'y-grid1',
+    class: 'grid'
+})
+graph1.append('polyline').attrs({
+    points: `0,0 ${graph1width},0 ${graph1width},${graph1height}`,
+    'stroke-width': 2,
+    stroke: '#f4f4f4',
+    fill: 'none'
+})
+graph1.append('g').attrs({
+    transform: `translate(0, ${graph1height})`,
+    id: 'xaxis1',
+    color: '#f4f4f4'
+})
+graph1.append('g').attrs({
+    color: '#f4f4f4',
+    id: 'yaxis1',
+})
+//scale
+//let scaleX1 = d3.scaleLinear().range([graph1width, 0]).domain(d3.max(keruletmin, d=>d.nep))
+let scaleX1 = d3.scaleLinear().range([0,graph1width]).domain([20000,150000])
+let scaleY1 = d3.scaleLinear().range([graph1height,0]).domain([0,60])
+let scaleSize = d3.scaleSqrt().range([20,60]).domain(d3.extent(keruletmin, d=>d.nep / d.lak))
+d3.axisBottom(scaleX1)
+d3.axisLeft(scaleY1)
+let zIndexOrder = [0,2,3,4,5,6,7,10,11,13,15,16,17,18,19,20,21,22,14,9,1,12,8]
+let keruletminZ = zIndexOrder.map(i=>keruletmin[i])
+graph1.selectAll('circle').data(keruletminZ).enter().append('circle').attrs({
+    cx: (d)=>scaleX1(d.nep),
+    cy: (d)=>scaleY1(d.ter),
+    r: d=>scaleSize(d.nep / d.lak),
+    fill: (d) => d.side === 'buda' ? '#D4D45E' : '#91A6E5',
+    'fill-opacity': .3,
+    stroke: '#f4f4f4',
+    'stroke-width': 1.5,
+    class: 'c1'
+}).on('mouseover', function(e, d) {
+    tip1.show(e,d)
+}).on('mouseout', function(e, d) {
+    tip1.hide(e,d)
+})
+
+let gridX1 = d3.axisBottom(scaleX1)
+gridX1.tickFormat('').tickSize(-1*graph1height).tickSizeOuter(0)
+d3.select('#x-grid1').call(gridX1)
+let gridY1 = d3.axisLeft(scaleY1)
+gridY1.tickFormat('').tickSize(-1*graph1width).tickSizeOuter(0)
+d3.select('#y-grid1').call(gridY1)
+d3.selectAll('.grid line').attrs({
+    stroke: '#f4f4f4' ,
+    'stroke-width': .5,
+    'stroke-dasharray': '1,5'
+})
+let xaxis1 = d3.axisBottom(scaleX1).ticks(5)
+d3.select('#xaxis1').call(xaxis1).select('path').attr('stroke-width', 2)
+let yaxis1 = d3.axisLeft(scaleY1).ticks(5)
+d3.select('#yaxis1').call(yaxis1).select('path').attr('stroke-width', 2)
+
+graph1.call(tip1)
+graph1.selectAll('.label').data(keruletmin).enter().append('text').attrs({
+    'x':d => d.ker === 1 ? scaleX1(d.nep) -9 : scaleX1(d.nep)+1,
+    'y':d => d.ker === 1 ? scaleY1(d.ter) -9 : scaleY1(d.ter)+1,
+    'font-size': 16,
+    'fill': '#222220',
+    'text-anchor': 'middle',
+    'alignment-baseline': 'middle',
+    'font-weight': 800
+}).text(d=>d.ker)
+graph1.selectAll('.label').data(keruletmin).enter().append('text').attrs({
+    'x':d => d.ker === 1 ? scaleX1(d.nep) -10 : scaleX1(d.nep),
+    'y':d => d.ker === 1 ? scaleY1(d.ter) -10 : scaleY1(d.ter),
+    'font-size': 16,
+    'fill': '#f4f4f4',
+    'text-anchor': 'middle',
+    'alignment-baseline': 'middle',
+    'font-weight': 600
+}).text(d=>d.ker)
+
+
+//svg and graph2
 let dim = {
     width: 600,
     height: 300
@@ -49,7 +151,7 @@ let gridY = d3.axisLeft(scaleY)
 axisY.ticks(5)
 axisX.tickSize(0)
 gridY.tickSize(-1*graphWidth).ticks(5).tickFormat('').tickSizeOuter(0)
-graph = svg.append('g').attrs({
+let graph = svg.append('g').attrs({
     width: graphWidth,
     height: graphHeight,
     transform: `translate(${margin.left}, ${margin.top})`
@@ -106,7 +208,7 @@ const update = (data) => {
         tip.show(e,d)
     }).on('mouseout', function (e, d) {
         d3.select(this).attr('fill', (d) => setColorByInner(d.inner))
-        d3.select(`circle#c${d.id}`).attr('fill', (d) => d.side === 'buda' ? '#336222' : '#5bae3d')
+        d3.select(`circle#c${d.id}`).attr('fill', (d) => d.side === 'buda' ? '#D4D45E' : '#91A6E5')
         tip.hide()
     })
     //circles on the bars
@@ -119,14 +221,14 @@ const update = (data) => {
     }).transition().duration(1000).attrs({
         'cx': d => scaleX(d.name) + scaleX.bandwidth()/2,
         'cy': (d) => scaleY(d.onlak),
-        'fill': (d) => d.side === 'buda' ? '#336222' : '#5bae3d'
+        'fill': (d) => d.side === 'buda' ? '#D4D45E' : '#91A6E5'
     })
 
     circls.enter().append('circle').attrs({
         'cx': d => scaleX(d.name) + scaleX.bandwidth()/2,
         'cy': (d) => scaleY(d.onlak),
         'r': scaleX.bandwidth()/2,
-        'fill': (d) => d.side === 'buda' ? '#336222' : '#5bae3d',
+        'fill': (d) => d.side === 'buda' ? '#D4D45E' : '#91A6E5',
         'stroke': '#222220',
         'stroke-width': 1.2,
         'id': (d) => `c${d.id}`,
@@ -135,7 +237,7 @@ const update = (data) => {
         d3.select(`rect#${d.id}`).attr('fill', '#f4f4f4')
         tip.show(e,d)
     }).on('mouseout', function (e,d) {
-        d3.select(this).attr('fill', (d) => d.side === 'buda' ? '#336222' : '#5bae3d')
+        d3.select(this).attr('fill', (d) => d.side === 'buda' ? '#D4D45E' : '#91A6E5')
         d3.select(`rect#${d.id}`).attr('fill', (d) => setColorByInner(d.inner))
         tip.hide()
     })

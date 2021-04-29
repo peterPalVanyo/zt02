@@ -63,7 +63,7 @@ button {
   flex-direction: column;
   font-weight: 300;
 }
-.tip {
+.tip, .tip1 {
   color: $canvas-dark;
   background-color: $pen;
   padding: 5px 10px;
@@ -74,11 +74,20 @@ button {
     line-height: 1.2;
   }
 }
+.tip1 {
+  border: 1.5px solid $pen;
+  background-color: $canvas-dark;
+  color: $pen;
+  box-shadow: 4px 3px 5px rgba(0, 0, 0, 1);
+  & div {
+  }
+}
 section {
   min-height: 100vh;
   width: 100%;
   background-color: $canvas-light;
   &#hero {
+    max-width: 160rem;
     display: grid;
     grid-template-columns: repeat(3, 1fr) 30rem;
     grid-template-rows: repeat(3, 1fr);
@@ -107,7 +116,7 @@ section {
       justify-content: center;
       align-items: flex-start;
       padding-top: 10rem;
-      clip-path: polygon(0 0, 100% 0, 100% 75%, 0 100%);
+      clip-path: polygon(0 0, 100% 0, 100% 60%, 0 97%);
       & .container {
         font-size: 2.5rem;
         font-weight: 300;
@@ -115,6 +124,24 @@ section {
         & p span {
           color: $pen-dark;
           font-weight: 800;
+        }
+      }
+    }
+  }
+  &#chart1 {
+    background-color: $canvas-dark;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    & .innercointainer {
+      max-width: 160rem;
+      & #chart1container {
+        //border: 0.1rem solid $pen;
+        & svg text {
+          pointer-events: none;
+        }
+        & svg circle {
+          filter: drop-shadow(4px 3px 5px rgba(0, 0, 0, 1));
         }
       }
     }
