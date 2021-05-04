@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap" rel="stylesheet">
     <title>D3 template</title>
 </head>
 <body>
@@ -27,13 +28,24 @@
             </div>
             <div id="hero-info">
                 <div class="container">
-                    <p>Adatláttatunk:<br>az első kerület <span>(01k)</span> elhelyezése adatok, információmorzsák segítségével a főváros térképén a többi kerülettel összevetésben.</p>
+                    <p>Adatláttatunk:<br>az első kerület <span class="italic">(01k)</span> elhelyezése adatok, információmorzsák segítségével a főváros térképén a többi kerülettel összevetésben.</p>
                 </div>
             </div>
         </section>
         <section id="chart1">
             <div class="innercointainer">
                 <div id="chart1container"></div>
+                <img class="legend1" src="./assets/legend1.svg" alt="legend1">
+                <div class="legend1-text">
+                    <h3>Ici.Pici. Tesó: 5. Uncsitesó: 6,7.</h3>
+                    <p>Mint kartoték-adat, az első kerület az ötödik testvérének tekinthető: mind lakosok számát, mind területét tekintve a
+                    legparányibbak. Soroksáron szintén kevesen laknak ugyan, de területe a második legnagyobb. A hatodik és hetedik kerület
+                    hasonló méretű, viszont ott valamivel többen élnek.
+                    A sűrűbben lakott kerületek között van.
+                    Az ellenkező oldal (az ábra bal-felső része) a 23-17-22 kerületek, melyek a legszellősebbek. Szintén jellemzője az
+                    utóbbi csoportnak, hogy itt laknak a legtöbben egy lakásban – amit a körök mérete mutat. Az első kerület a városmaghoz
+                    hasonlóan visszafogott: a lakó/lakás arányszáma alacsony.<br><span class="italic">Kerületi adatokhoz menj egérrel a körökhöz :)</span></p>
+                </div>
             </div>
         </section>
         <section id="chart2">
@@ -59,6 +71,19 @@
                 </div>
             </div>
             <img class="legend" src="./assets/legend2.svg" alt="legend2">
+        </section>
+        <section id="chart3">
+            <div class="innercontainer">
+                <img id="wallets" src="./assets/wallets.svg" alt="wallets">
+                <img src="./assets/bp.svg" alt="bp" id="bp">
+                <div class="chart3-title">
+                    <img src="./assets/head.svg" alt="head" >
+                    <h3> <span class="red">65</span>% : <span class="green">2.7</span>%</h3>
+                    <img src="./assets/bag.svg" alt="bag">
+                    <h3> <span class="red">39.5</span>% : <span class="green">1.6</span>%</h3>
+                </div>
+                <p>Az első kerület önkormányzatának összes évi bevétele 11.535.647.000 HUF, ami a harmadik legszerényebb büdzsé budapesti viszonylatban. Ugyanakkor a bevételt lakoságarányosan tekintve már Budavár az ezüstérmes. Ami igazán meghatározza az anyagi eloszlásokat, hogy a listavezető, – akár per capita, akár abszolút számokat tekintve – az ötödik kerület nagyságrenddel nagyobb számokkal dolgozik: a lakosságarányosan az apanázs 65%-át birtokolják, de ha nem koponyánként számolunk, akkor is ők rendelkeznek a teljes bevételek 39,5%-val.</p>
+            </div>
         </section>
     </div>
 </body>

@@ -101,6 +101,12 @@ let xaxis1 = d3.axisBottom(scaleX1).ticks(5)
 d3.select('#xaxis1').call(xaxis1).select('path').attr('stroke-width', 2)
 let yaxis1 = d3.axisLeft(scaleY1).ticks(5)
 d3.select('#yaxis1').call(yaxis1).select('path').attr('stroke-width', 2)
+d3.selectAll('#xaxis1 text').attrs({
+    'font-size': 13
+})
+d3.selectAll('#yaxis1 text').attrs({
+    'font-size': 13
+})
 
 graph1.call(tip1)
 graph1.selectAll('.label').data(keruletmin).enter().append('text').attrs({

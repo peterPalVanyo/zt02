@@ -5,6 +5,8 @@ $pen-dark: #82837c;
 $brand-dark: #336222;
 $brand-middle: #5bae3d;
 $brand-light: #9dce8b;
+$chart-red: #d44848;
+$chart-green: #57a298;
 
 *,
 *::after,
@@ -63,7 +65,8 @@ button {
   flex-direction: column;
   font-weight: 300;
 }
-.tip, .tip1 {
+.tip,
+.tip1 {
   color: $canvas-dark;
   background-color: $pen;
   padding: 5px 10px;
@@ -79,8 +82,13 @@ button {
   background-color: $canvas-dark;
   color: $pen;
   box-shadow: 4px 3px 5px rgba(0, 0, 0, 1);
-  & div {
-  }
+}
+.italic {
+  //font-style: italic;
+  font-family: "Reenie Beanie", cursive;
+  font-size: 3.2rem;
+  line-height: 2.6rem;
+  letter-spacing: normal;
 }
 section {
   min-height: 100vh;
@@ -104,26 +112,33 @@ section {
       justify-content: center;
       align-items: center;
       z-index: 10;
+      opacity: 0;
+      animation: logo 3s ease forwards;
       & svg {
-        filter: drop-shadow(9px 9px 6px rgba(0, 0, 0, 0.7));
+        //filter: drop-shadow(9px 9px 6px rgba(0, 0, 0, 0.7));
+        transform: translate(9px, 9px);
+        filter: drop-shadow(0px 0px 0px rgba(0, 0, 0, 0.7));
+        animation: logo-shadow 1s ease-out forwards 3.5s;
       }
     }
     & #hero-info {
-      transform: translateY(5rem);
+      transform: translateY(3rem);
       grid-area: 1/-2/-1/-1;
       background-color: $canvas-dark;
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      padding-top: 10rem;
+      padding-top: 5rem;
       clip-path: polygon(0 0, 100% 0, 100% 60%, 0 97%);
       & .container {
         font-size: 2.5rem;
         font-weight: 300;
         width: 80%;
-        & p span {
-          color: $pen-dark;
-          font-weight: 800;
+        letter-spacing: 0.1rem;
+        & p span.italic {
+          color: $chart-green;
+          font-size: 4rem;
+          //font-weight: 800;
         }
       }
     }
@@ -134,14 +149,47 @@ section {
     justify-content: center;
     align-items: center;
     & .innercointainer {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      justify-items: center;
+      align-items: center;
       max-width: 160rem;
+      height: 100vh;
       & #chart1container {
         //border: 0.1rem solid $pen;
+        grid-area: 1/1/3/2;
         & svg text {
           pointer-events: none;
         }
         & svg circle {
           filter: drop-shadow(4px 3px 5px rgba(0, 0, 0, 1));
+        }
+      }
+      & img.legend1 {
+        grid-area: 1/2/2/3;
+        max-width: 50%;
+      }
+      & .legend1-text {
+        grid-area: 2/2/3/3;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-direction: column;
+        & h3 {
+          font-size: 3.7rem;
+          background-color: $canvas-light;
+          padding: 1rem 3rem;
+          color: $canvas-dark;
+          justify-self: center;
+          display: inline-block;
+        }
+        & p {
+          text-align: center;
+          padding: 1rem;
+          letter-spacing: 0.2rem;
         }
       }
     }
@@ -211,11 +259,84 @@ section {
       grid-area: 3/2/-1/-1;
       align-self: start;
     }
-  }
-  svg {
-    //box-shadow: 10px 10px 15px rgba(0,0,0,0.2);
-    & rect {
-      filter: drop-shadow(4px 3px 5px rgba(0, 0, 0, 0.3));
+    & svg {
+      //box-shadow: 10px 10px 15px rgba(0,0,0,0.2);
+      & rect {
+        filter: drop-shadow(4px 3px 5px rgba(0, 0, 0, 0.3));
+      }
     }
+  }
+  &#chart3 {
+    background-color: $canvas-dark;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    & .innercontainer {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(3, auto);
+      justify-items: center;
+      align-items: center;
+      max-width: 160rem;
+      height: 100vh;
+      & img#wallets {
+        grid-area: 1/2/4/3;
+        width: 61.2rem;
+        filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 1));
+      }
+      & img#bp {
+        grid-area: 1/1/2/2;
+        //width: 27rem;
+        width: 50%;
+        filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 1));
+      }
+      & .chart3-title {
+        grid-area: 2/1/3/2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        & img {
+          width: 7rem;
+          filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 1));
+        }
+        & h3 {
+          font-size: 3.7rem;
+          padding: 0 2rem;
+          & .red {
+            color: $chart-red;
+          }
+          & .green {
+            color: $chart-green;
+          }
+        }
+      }
+      & p {
+        grid-area: 3/1/4/2;
+        color: $pen;
+        padding: 2rem;
+        text-align: center;
+        letter-spacing: 0.2rem;
+      }
+    }
+  }
+}
+@keyframes logo {
+  0% {
+    opacity: 0;
+    transform: translateX(-62rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes logo-shadow {
+  0% {
+    transform: translate(9px, 9px);
+    filter: drop-shadow(0px 0px 0px rgba(0, 0, 0, 0.7));
+  }
+  100% {
+    transform: translate(0, 0);
+    filter: drop-shadow(9px 9px 6px rgba(0, 0, 0, 0.7));
   }
 }
