@@ -30,14 +30,14 @@
 		}
 
 		.st5 {
-			fill: #ADAEA5;
+			fill: #82837c;
 			stroke: #F4F4F4;
 			stroke-width: 2;
 			stroke-miterlimit: 10;
 		}
 
 		.st6 {
-			fill: #ADAEA5;
+			fill: #82837c;
 		}
 	</style>
 	<g>
