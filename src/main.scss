@@ -40,21 +40,29 @@ body {
 }
 button {
   background-color: transparent;
-  border: none;
+  border: 1px solid $pen;
   color: $pen;
   display: inline-block;
   font-size: 2rem;
   padding: 1rem 2rem;
+  border-radius: 1rem;
+  &:first-child {
+    margin-right: 1rem;
+  }
   &:hover {
     color: darken($color: $pen, $amount: 15);
+    border-color: darken($color: $pen, $amount: 15);
   }
   &:focus {
     outline: none;
   }
   &.selected {
-    border-bottom: 0.4rem solid $pen;
+    background-color: $pen;
+    color: $canvas-light;
+    box-shadow: 0 0.5rem 1.5rem -0.5rem rgba(0, 0, 0, .3);
     &:hover {
-      border-bottom: 0.4rem solid darken($color: $pen, $amount: 15);
+      //border-bottom: 0.4rem solid darken($color: $pen, $amount: 15);
+      background-color: darken($color: $pen, $amount: 15);
     }
   }
 }
@@ -301,11 +309,15 @@ section {
       }
     }
     & .chartbtns {
-      grid-area: 1/2 / span 2/-1;
+      grid-area: 1/2/span 2/-1;
       & .btns {
         display: flex;
         justify-content: center;
         align-items: center;
+      }
+      & p.italic {
+        text-align: center;
+        margin-top: 1rem;
       }
     }
     & img.legend {

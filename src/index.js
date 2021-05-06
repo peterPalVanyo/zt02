@@ -53,6 +53,13 @@ graph1.append('polyline').attrs({
     stroke: '#f4f4f4',
     fill: 'none'
 })
+graph1.append('polyline').attrs({
+    points: '23.5,395.5 23.5,468.5 36.5,451.5 13.5,451.5 20.5,468.5',
+    'stroke-width': 1,
+    stroke: '#f4f4f4',
+    fill: 'none',
+    'stroke-linecap': 'round'
+})
 graph1.append('g').attrs({
     transform: `translate(0, ${graph1height})`,
     id: 'xaxis1',
